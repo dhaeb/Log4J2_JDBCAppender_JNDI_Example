@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <JDBC name="dbLogsStorePostgre" tableName="EVENT_LOGS">
+
+            <!-- If Using then JNDI DateSource -->
+            <DataSource jndiName="jndi/postgre" />
+
+            <!-- <ConnectionFactory
+                    class="com.github.dhaeb.db.PostgreLogsStoreConnectionFactory"
+                    method="getConnection" /> -->
+            <Column name="ID" pattern="%u" isUnicode="false"/>
+            <Column name="DATE_TIME" isEventTimestamp="true" isUnicode="false"/>
+            <Column name="CLASS" pattern="%logger" isUnicode="false"/>
+            <Column name="LEVEL" pattern="%level" isUnicode="false"/>
+            <Column name="MESSAGE" pattern="%message" isUnicode="false"/>
+            <Column name="EXCEPTION" pattern="%ex{full}" isUnicode="false"/>
+        </JDBC>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="LogToConsole" />
+            <AppenderRef ref="dbLogsStorePostgre" />
+        </Root>
+    </Loggers>
+</Configuration>
